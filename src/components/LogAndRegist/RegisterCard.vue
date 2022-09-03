@@ -66,9 +66,10 @@
           </el-form-item>
 
           <div>
-            <el-button @click="goRegister('ruleFormRef')" type="primary"
-              >注册</el-button
-            >
+            <el-button
+              @click="goRegister"
+              type="primary"
+            >注册</el-button>
           </div>
         </el-form>
       </div>
@@ -79,21 +80,18 @@
  <script>
 // @ is an alias to /src
 import { reactive, ref } from "vue";
-import { ElMessage } from "element-plus";
 // import { FormInstance, FormRules } from "element-plus";
 import api from "/src/api/index";
 export default {
-  data() {
+  data () {
+
     const validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入密码"));
       } else {
         // console.log("这个值到底存在吗", this.$refs.ruleFormRef.validateField(1234567))
         if (this.registForm.confirmPassword !== "") {
-          console.log(
-            "这个值到底存在吗",
-            this.$refs.ruleFormRef.validateField(registForm.confirmPassword)
-          );
+          console.log("这个值到底存在吗", this.$refs.ruleFormRef.validateField(registForm.confirmPassword))
         }
         callback();
       }
@@ -106,7 +104,7 @@ export default {
       } else {
         callback();
       }
-    };
+    }
     return {
       registForm: reactive({
         userName: "",
@@ -156,79 +154,53 @@ export default {
           {
             min: 6,
             max: 18,
-            message: "密码长度需在6-18个字符之间",
-            trigger: "blur",
+            message: "密码长度需在6-18个字符之间", trigger: "blur"
           },
-          { validator: validatePass, trigger: "blur" },
+          { validator: validatePass, trigger: "blur" }
         ],
         confirmPassword: [
           {
             min: 6,
             max: 18,
-            message: "密码长度需在6-18个字符之间",
-            trigger: "blur",
+            message: "密码长度需在6-18个字符之间", trigger: "blur"
           },
-          { validator: validatePass2, trigger: "blur", required: true },
-        ],
+          { validator: validatePass2, trigger: "blur", required: true },],
       },
       ruleFormRef: ref(),
     };
   },
   methods: {
-    goRegister(formEl) {
+    goRegister () {
       //点击以后，调用api看是否注册成功
-      this.$refs[formEl].validate((valid) => {
-        if (!valid) {
-          // alert('submit!');
-          console.log("error submit!!");
-          return false;
-        } else {
-          api
-            .Regist(
-              this.registForm.userName,
-              this.registForm.phoneNumber,
-              this.registForm.userEmail,
-              this.registForm.password
-            )
-            .then((res) => {
-              console.log("注册成功", res.data);
-              ElMessage({
-                message: "注册成功",
-                type: "success",
-              });
-              this.userId = res.data.data.user_id;
-
-              window.sessionStorage.setItem(
-                "userid",
-                JSON.stringify(res.data.data.user_id)
-              ); //保存用户id
-
-              window.sessionStorage.setItem(
-                "useridentity",
-                JSON.stringify({ identity: "user" })
-              ); //保存用户类型
-
-              //跳转到补充信息
-              this.$router.push({
-                path: "/addInfo",
-                //query: { user_id: this.userId },
-              });
-            })
-            .catch((err) => {
-              ElMessage({
-                message: "注册失败",
-                type: "warning",
-              });
-              console.log("注册失败", err.data);
-            });
-          //路径跳转
-        }
+      api
+        .Regist(
+          this.registForm.userName,
+          this.registForm.phoneNumber,
+          this.registForm.userEmail,
+          this.registForm.password
+        )
+        .then((res) => {
+          console.log('注册成功', res.data)
+          this.userId = res.data.data.user_id;
+          window.sessionStorage.setItem(
+                    "userid",
+                    JSON.stringify(res.data.data.user_id)
+                  ); 
+        })
+        .catch((err) => {
+          console.log("注册失败", err.data);
+        })
+      //路径跳转
+      this.$router.push({
+        path: "/addInfo",
+        //params: {  }, path和params不能同时使用，会使params失效，要用params需要将path替代为name(router名)
+        query: { user_id: this.userId },
       });
-    },
+    }
   },
 };
-// const text = ref("");
-// const input = ref("");
+const text = ref("");
+const input = ref("");
 </script>
 
 <!-- css -->
@@ -277,4 +249,3 @@ export default {
   justify-content: space-between;
 }
 </style>
- 

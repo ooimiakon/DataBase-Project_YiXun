@@ -75,7 +75,7 @@ import { regionData } from "element-china-area-data";
 export default {
   data() {
     return {
-      user_id: 1,
+      user_id: JSON.parse(sessionStorage.getItem("userid")),
       user_gender: "",
       user_province: "",
       user_city: "",

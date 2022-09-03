@@ -374,10 +374,6 @@ const api = {
     getAllCLuesPublished(user_id, pageNum, pageSize) {
         return axios.get(path.baseUrl + path.getAllCLuesPublished, { params: { user_id: user_id, pageNum: pageNum, pageSize: pageSize } })
     },
-    //3.2 展示志愿者报名的所有志愿活动
-    getVolAct(volid, pagenum, pagesize) {
-        return axios.get(path.baseUrl + path.getVolAct, { params: { volid: volid, pagenum: pagenum, pagesize: pagesize } })
-    },
 
     //1.1-2管理员发布志愿活动
     releaseVolActivity(act_name, act_content, act_time, need_people, act_province, act_city, act_area, act_address, contact_method, volInst_Id) {

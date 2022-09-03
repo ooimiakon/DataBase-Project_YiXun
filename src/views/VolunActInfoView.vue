@@ -135,7 +135,7 @@ export default {
     const act_id = route.query.act_id;
     console.log("接收到的志愿活动id", act_id);
 
-    const vol_id = 2;
+    const vol_id = JSON.parse(sessionStorage.getItem("volid"));
     let signup = ref("我要报名");
     let is_applied = ref(false);
     let volActInfo = ref([]);
